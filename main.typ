@@ -460,33 +460,9 @@ $b_r_1=22; b_r_2=35$\
 $B=5;T_"disk"=0.001;T_"seek"=0.1$
 
 === Block Join method
-+ *Memory Limitation*: Only 5 blocks available.
-+ Blocks Needed for $r_1$ and $r_2$:
-  - $r_1: ceil(75435/22)=3429$
-  - $r_2: ceil(11456/35)=328$
-+ *Strategy:*
-  - Use 1 block for $r_1$ and 4 blocks for $r_2$ (or vice versa depending on which
-    is more efficient).
-  - This setup means you can have 4 blocks of $r_2$ loaded into memory, storing up
-    to $4 dot 35=140$ patterns of $r_2$ at a time.
-+ *Iterations Needed*:
-  - *For $r_2$:* $ceil(11456/140)=82$ full iterations (each iteration loads $140$ patterns
-    of $r_2$ into memory).
-  - *For $r_1$:* Each block of $r_1$ needs to be loaded and processed against all
-    loaded $r_2$ blocks for each iteration.
-+ *Time Calculation for Block Join:*
-  - Load time for $r_2$ per iteration: $4 dot 0.001 = 0.004 "ms"$
-  - Total load time for $r_2$: $82 dot 0.004 = 0.328 "ms"$
-  - Join Time per $r_1$ block per $r_2$ iteration: $0.1 "ms"$ (for each block of $r_1$ joined
-    with 4 blocks of $r_2$)
-  - Total join time for all $r_1$ blocks per $r_2$ iteration: $3429 dot 0.1= 342.9"ms"$
-  - Total join time for all iterations: $343 dot 82 = 28117.8 "ms"$
++ Apply formulas for block transfers and seeks.
 
 === Nested-Loop Join Method
-+ Nested-loop join:
-  - For each pattern in $r_1$, search all patterns in $r_2$.
-+ Total Combinations: $75435 dot 11456$
-+ Time Calculation for Nested-Loop Join:
-  - Reading and searching time for each combination: $0.001+0.1=0.101 "ms"$
-  - Total time: $75435 dot 11456 dot 0.101 = 87282519.36 "ms"$ [Authors comment:
-    seems fishy]
++ Apply the formula for block transfers and 2 seeks (only 2).
+
+
